@@ -318,6 +318,7 @@ function TopicSelector({
                     value={"Select/Unselect All"}
                     onChange={handleSelectUnselectAll}
                     checked={Boolean(selections.length)}
+                    disabled={selectedExcludedTopics.length > 0 }
                     id={"select-unselect-all"}
                 />
                 {"Select/Unselect All"}
@@ -457,6 +458,7 @@ function TopicExclusionSelector({
                     value={"Select/Unselect All"}
                     onChange={handleSelectUnselectAll}
                     checked={Boolean(selections.length)}
+                    disabled={selectedTopics.length > 0 }
                     id={"select-unselect-all"}
                 />
                 {"Select/Unselect All"}
