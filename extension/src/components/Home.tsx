@@ -5,6 +5,10 @@ import { SessionResponse } from "../types/Session";
 import JoinRoomByIdButton from "./buttons/JoinRoomByIdButton";
 import RoomSettingsButton from "./buttons/RoomSettingsButton";
 
+const AppInfo = ({ version }: {version?: string}) => (
+    <span className="text-gray-400">FLG{version ? `v${version}` : ''}</span>
+)
+
 export default function Home({ session }: { session: SessionResponse }) {
     let { username, picture, room } = session;
 
@@ -24,7 +28,8 @@ export default function Home({ session }: { session: SessionResponse }) {
     } else {
         return (
             <div className="flex h-screen flex-col items-center justify-center bg-lc-bg-light p-2 text-sm dark:bg-lc-bg">
-                <div className="mr-4 flex w-full flex-col items-end">
+                <div className="mx-4 flex w-full flex-row justify-between items-center">
+                    <AppInfo />
                     <SignOutButton />
                 </div>
 

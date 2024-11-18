@@ -1,0 +1,98 @@
+name: Custom LeetRooms Chrome Extension Build
+
+on:
+  workflow_dispatch: # On-demand trigger
+  push:
+    branches:
+      - vradchuk/add-tag-exclusions
+  #   tags: # Trigger on new tags
+  #     - "v*" # Match tags like v1.0.0
+env:
+    VERSION: "0.2.${{ github.run_number }}"
+    ARTIFACT_NAME: "leetrooms-chrome-extension-0.2.${{ github.run_number }}.zip"
+    BASE_URL: ${{vars.BASE_URL}}
+    APP_URL: ${{vars.APP_URL}}
+    SERVER_URL: ${{vars.SERVER_URL}}
+    CORS_ORIGIN: ${{vars.CORS_ORIGIN}}
+    VITE_APP_URL: ${{vars.VITE_APP_URL}}
+    VITE_SERVER_URL: ${{vars.VITE_SERVER_URL}}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Custom LeetRooms Chrome Extension
+    defaults:
+      run:
+        working-directory: extension
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
+        cache-dependency-path: extension/package-lock.json
+    - run: npm ci
+
+    - name: Update version of plugin in file manifest.json
+      run: |
+        sed -i 's/"version": ".*"/"version": "${{env.VERSION}}"/' src/public/manifest.json
+        head -5 src/public/manifest.json
+
+    - name: Build the Extension
+      run: npm run build
+
+    - name: Deploy app
+      uses: nwtgck/actions-netlify@v2.0
+      with:
+        publish-dir: 'extension/dist'
+        production-branch: vradchuk/add-tag-exclusions  #TODO update branch to main after merge
+        deploy-message: "Deploy from GitHub Actions"
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DASHBOARD }}
+      timeout-minutes: 1
+
+    - name: Prepare Extension for Chrome
+      run: |
+        cd dist
+        zip -r "../${ARTIFACT_NAME}" .
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: extension/${{ env.ARTIFACT_NAME }}
+
+  # release:
+  #   runs-on: ubuntu-latest
+  #   name: Release Build to GitHub
+
+  #   steps:
+  #   - name: Checkout Repository
+  #     uses: actions/checkout@v3
+
+  #   - name: Set up Node.js
+  #     uses: actions/setup-node@v3
+  #     with:
+  #       node-version: "20"
+
+  #   - name: Install Dependencies
+  #     run: npm install
+
+  #   - name: Build the Extension
+  #     run: npm run build
+
+  #   - name: Prepare Extension for Release
+  #     run: zip -r chrome-extension.zip dist/
+
+  #   - name: Create GitHub Release
+  #     uses: ncipollo/release-action@v1
+  #     with:
+  #       artifacts: chrome-extension.zip
+  #       token: ${{ secrets.GITHUB_TOKEN }}
+  #       tag: ${{ github.ref_name }}
+  #       name: Release ${{ github.ref_name }}
+  #       body: "Build artifacts for release ${{ github.ref_name }}"

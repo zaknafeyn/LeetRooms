@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "LeetRooms",
+    "name": "LeetRooms - FLG",
     "version": "0.1.15",
-    "description": "Multiplayer rooms for LeetCode.",
+    "description": "Multiplayer rooms for LeetCode for FLG groups.",
     "homepage_url": "https://leetrooms.com",
     "permissions": ["activeTab", "storage", "webRequest"],
     "host_permissions": ["https://leetcode.com/problems/*"],
