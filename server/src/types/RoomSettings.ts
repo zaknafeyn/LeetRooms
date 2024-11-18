@@ -1,7 +1,10 @@
 export interface RoomSettings {
     questionFilter: QuestionFilter;
+    excludeQuestion: QuestionFilter;
     duration?: number | null;
     difficulty: RoomDifficulty;
+    listOfQuestions?: string[];
+    numberOfQuestion: number;
 }
 
 export interface RoomDifficulty {
@@ -104,7 +107,12 @@ export const defaultRoomSettings: RoomSettings = {
         kind: QuestionFilterKind.Topics,
         selections: topics,
     },
+    excludeQuestion: {
+        kind: QuestionFilterKind.Topics,
+        selections: [],
+    },
     duration: null,
+    numberOfQuestion: 4,
     difficulty: {
         Easy: true,
         Medium: true,

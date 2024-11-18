@@ -210,7 +210,7 @@ function SettingsTabs({
     roomSettings: RoomSettings;
     setRoomSettings: (roomSettings: RoomSettings) => void;
 }) {
-    let tabs = ["Topics"];
+    let tabs = ["Topics", "Excluded topics"];
     return (
         <div className="h-full px-2 py-2">
             <Tab.Group>
@@ -233,6 +233,10 @@ function SettingsTabs({
                 </Tab.List>
                 <Tab.Panels className="mt-2">
                     <TopicSelector
+                        roomSettings={roomSettings}
+                        setRoomSettings={setRoomSettings}
+                    />
+                    <TopicExclusionSelector
                         roomSettings={roomSettings}
                         setRoomSettings={setRoomSettings}
                     />
@@ -303,6 +307,8 @@ function TopicSelector({
         });
     }
 
+    const selectedExcludedTopics = roomSettings.excludeQuestion.selections;
+
     return (
         <Tab.Panel>
             <label className="mb-2 flex flex-row items-center gap-3 rounded-md bg-lc-fg-modal-light px-3 py-1 text-sm text-lc-text-light dark:bg-lc-fg-modal dark:text-white">
@@ -334,6 +340,7 @@ function TopicSelector({
                                 value={topic}
                                 onChange={handleSelect}
                                 checked={selections.includes(topic)}
+                                disabled={selectedExcludedTopics.includes(topic)}
                                 id={topic}
                             />
                             {topic}
@@ -383,6 +390,103 @@ function TopicSelector({
                     Hard
                 </button>
             </fieldset>
+        </Tab.Panel>
+    );
+}
+
+function TopicExclusionSelector({
+    roomSettings,
+    setRoomSettings,
+}: {
+    roomSettings: RoomSettings;
+    setRoomSettings: (roomSettings: RoomSettings) => void;
+}) {
+    let { selections } = roomSettings.excludeQuestion;
+
+    function handleSelect(event: ChangeEvent<HTMLInputElement>) {
+        let newSelection = event.target.value;
+        if (event.target.checked) {
+            setRoomSettings({
+                ...roomSettings,
+                excludeQuestion: {
+                    kind: QuestionFilterKind.Topics,
+                    selections: [...selections, newSelection],
+                },
+            });
+        } else {
+            setRoomSettings({
+                ...roomSettings,
+                excludeQuestion: {
+                    kind: QuestionFilterKind.Topics,
+                    selections: selections.filter(
+                        (selection) => selection !== newSelection
+                    ),
+                },
+            });
+        }
+    }
+
+    function handleSelectUnselectAll(event: ChangeEvent<HTMLInputElement>) {
+        if (event.target.checked) {
+            setRoomSettings({
+                ...roomSettings,
+                excludeQuestion: {
+                    kind: QuestionFilterKind.Topics,
+                    selections: topics,
+                },
+            });
+        } else {
+            setRoomSettings({
+                ...roomSettings,
+                excludeQuestion: {
+                    kind: QuestionFilterKind.Topics,
+                    selections: [],
+                },
+            });
+        }
+    }
+
+    const selectedTopics = roomSettings.questionFilter.selections;
+
+    return (
+        <Tab.Panel>
+            <label className="mb-2 flex flex-row items-center gap-3 rounded-md bg-lc-fg-modal-light px-3 py-1 text-sm text-lc-text-light dark:bg-lc-fg-modal dark:text-white">
+                <input
+                    type="checkbox"
+                    name="select-unselect-all"
+                    value={"Select/Unselect All"}
+                    onChange={handleSelectUnselectAll}
+                    checked={Boolean(selections.length)}
+                    id={"select-unselect-all"}
+                />
+                {"Select/Unselect All"}
+            </label>
+
+            <div
+                className={classNames(
+                    "h-56 overflow-auto rounded-md bg-lc-fg-modal-light dark:bg-lc-fg-modal dark:text-white"
+                )}
+            >
+                <ul className="flex flex-col text-sm">
+                    {topics.map((topic) => (
+                        <label
+                            key={topic}
+                            className="flex flex-row items-center gap-3 px-3 py-1 even:bg-white even:bg-opacity-[45%] dark:even:bg-lc-bg dark:even:bg-opacity-[35%]"
+                        >
+                            <input
+                                type="checkbox"
+                                name="topics"
+                                value={topic}
+                                onChange={handleSelect}
+                                checked={selections.includes(topic)}
+                                disabled={ selectedTopics.includes(topic) }
+                                id={topic}
+                            />
+                            {topic}
+                        </label>
+                    ))}
+                </ul>
+            </div>
         </Tab.Panel>
     );
 }

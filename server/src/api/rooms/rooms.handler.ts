@@ -75,6 +75,7 @@ export async function createRoom(
 
             let roomSettings: RoomSettings = req.body;
             let { kind: filterKind, selections } = roomSettings.questionFilter;
+            let { selections: excludedSelections } = roomSettings.excludeQuestion;
             if (filterKind !== QuestionFilterKind.Topics) {
                 throw new Error(`Invalid question filter kind: ${filterKind}`);
             }
@@ -84,6 +85,11 @@ export async function createRoom(
                     tags: {
                         hasSome: selections,
                     },
+                    NOT: {
+                        tags: {
+                            hasSome: excludedSelections
+                        }
+                    }
                 },
             });
 
