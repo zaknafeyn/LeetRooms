@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import Home from "./Home";
+import Home, { AppInfo } from "./Home";
 import CookiesWarning from "./CookiesWarning";
 import { SERVER_URL, authProviders } from "../config";
 import SignInButton from "./buttons/SignInButton";
@@ -44,8 +44,11 @@ export default function Login() {
     } else {
         return (
             <div className="flex h-screen flex-col items-center bg-lc-bg-light p-2 text-sm dark:bg-lc-bg">
+                <div className="mx-4 flex w-full flex-row justify-between items-center">
+                    <AppInfo />
+                </div>
                 <a
-                    href="https://github.com/marwanhawari/LeetRooms"
+                    href="https://github.com/zaknafeyn/LeetRooms"
                     rel="noopener noreferrer"
                     target="_blank"
                 >
@@ -59,7 +62,7 @@ export default function Login() {
                     LeetRooms
                 </div>
                 <div className="mt-10 flex flex-col items-center justify-center gap-y-3">
-                    {authProviders.map((authProvider) => {
+                    {authProviders.filter(({disabled}) => !disabled).map((authProvider) => {
                         return (
                             <SignInButton
                                 key={authProvider.name}

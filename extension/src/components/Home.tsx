@@ -5,7 +5,7 @@ import { SessionResponse } from "../types/Session";
 import JoinRoomByIdButton from "./buttons/JoinRoomByIdButton";
 import RoomSettingsButton from "./buttons/RoomSettingsButton";
 
-const AppInfo = ({ version }: {version?: string}) => (
+export const AppInfo = ({ version }: {version?: string}) => (
     <span className="text-gray-400">FLG{version ? `v${version}` : ''}</span>
 )
 

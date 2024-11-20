@@ -4,4 +4,5 @@ export interface AuthProvider {
     icon: string;
     color: string;
     hoverColor: string;
+    disabled?: boolean;
 }

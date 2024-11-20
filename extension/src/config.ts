@@ -20,6 +20,7 @@ const authProviders: AuthProvider[] = [
         icon: googleIcon,
         color: "bg-google-bg",
         hoverColor: "hover:bg-google-bg-hover",
+        disabled: true
     },
     {
         name: "Discord",
@@ -27,6 +28,7 @@ const authProviders: AuthProvider[] = [
         icon: discordIcon,
         color: "bg-discord-bg",
         hoverColor: "hover:bg-discord-bg-hover",
+        disabled: true
     },
     {
         name: "Twitch",
@@ -34,6 +36,7 @@ const authProviders: AuthProvider[] = [
         icon: twitchIcon,
         color: "bg-twitch-bg",
         hoverColor: "hover:bg-twitch-bg-hover",
+        disabled: true
     },
 ];
 
