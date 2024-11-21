@@ -3,8 +3,8 @@ name: Custom LeetRooms Chrome Extension Build
 on:
   workflow_dispatch: # On-demand trigger
   push:
-    branches:
-      - vradchuk/add-tag-exclusions
+    # branches:
+    #   - vradchuk/add-tag-exclusions
   #   tags: # Trigger on new tags
   #     - "v*" # Match tags like v1.0.0
 env:
@@ -45,7 +45,7 @@ jobs:
       run: npm run build
 
     - name: Deploy app
-      uses: nwtgck/actions-netlify@v2.0
+      uses: nwtgck/actions-netlify@v3.0
       with:
         publish-dir: 'extension/dist'
         production-branch: vradchuk/add-tag-exclusions  #TODO update branch to main after merge
