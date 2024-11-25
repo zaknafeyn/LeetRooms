@@ -2,7 +2,7 @@
 
 ## Download extension 
 
-Download extension from the latest build in [GH Actions](https://github.com/zaknafeyn/LeetRooms/actions/workflows/extension.yml) and unzip archive in any place on your machine
+Download the latest extension release from [GH releases](https://github.com/zaknafeyn/LeetRooms/releases) and unzip archive in any place on your machine
 
 ## Install extension
 

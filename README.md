@@ -24,3 +24,7 @@ See the [CONTRIBUTING.md](https://github.com/marwanhawari/LeetRooms/blob/main/CO
 <p align="center">
   <img width=100% height=auto src="https://github.com/marwanhawari/LeetRooms/blob/main/website/src/assets/LeetRoomsScreenshot.svg" alt="LeetRooms screenshot"/>
 </p>
+
+# Install custom extension build 
+
+See the [extension/README.MD](https://github.com/zaknafeyn/LeetRooms/blob/vradchuk/add-tag-exclusions/extension/README.md) for details on how to install the custom extension build
